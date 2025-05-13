@@ -1,0 +1,77 @@
+{
+    "store_bread_types": [
+        "fehér kenyér",
+        "rozscipó",
+        "teljeskiörlésű kenyér",
+        "kovászos vekni",
+        "Mennyi kiflit sütöttél és milyet? (db x bolti kifli ára)",
+        "Mennyi zsemlét sütöttél és milyet? (db x bolti zsemle ára)",
+        "Mennyi uzsonnát vált ki az általad sütött croissant? Azokhoz az uzsonnákhoz milyen értékben kellett volna a pékségben vásárolnod?",
+        "felvágott"
+    ],
+
+    "ingredients": {
+        "gabona": {
+            "BL55 liszt": { "unit": "g", "price_per_unit": 0.292 },
+            "BL80 kenyérliszt": { "unit": "g", "price_per_unit": 0.315 },
+            "teljes kiörléső búzaliszt": { "unit": "g", "price_per_unit": 0.499 },
+            "tönkönybúza liszt": { "unit": "g", "price_per_unit": 0.739 },
+            "világos rozsliszt": { "unit": "g", "price_per_unit": 0.499 },
+            "félbarna kenyérliszt": { "unit": "g", "price_per_unit": 0.499 },
+            "zabpehelyliszt": { "unit": "g", "price_per_unit": 1.498 },
+            "pizzaliszt": { "unit": "g", "price_per_unit": 0.499 },
+            "zabpehely": { "unit": "g", "price_per_unit": 0.359 }
+        },
+        "zsiradék": {
+            "vaj": { "unit": "g", "price_per_unit": 5.7 },
+            "margarin": { "unit": "g", "price_per_unit": 1.312 },
+            "napraforgó-étolaj": { "unit": "g", "price_per_unit": 0.979 },
+            "olívaolaj": { "unit": "g", "price_per_unit": 6.52 },
+            "kókuszolaj": { "unit": "g", "price_per_unit": 3 }
+        },
+        "járulékos anyagok": {
+            "friss élesztő": { "unit": "g", "price_per_unit": 2.1 },
+            "instant élesztő": { "unit": "db", "price_per_unit": 179 },
+            "sütőpor": { "unit": "db", "price_per_unit": 60 },
+            "só": { "unit": "g", "price_per_unit": 0.305 },
+            "himalája só": { "unit": "g", "price_per_unit": 0.899 },
+            "tojás": { "unit": "db", "price_per_unit": 100 },
+            "kristálycukor": { "unit": "g", "price_per_unit": 0.357 },
+            "porcukor": { "unit": "g", "price_per_unit": 0.538 }
+        },
+        "tejtermék": {
+            "tej": { "unit": "dl", "price_per_unit": 40 },
+            "tejföl": { "unit": "g", "price_per_unit": 0.789 },
+            "joghurt": { "unit": "g", "price_per_unit": 0.498 },
+            "kefir": { "unit": "g", "price_per_unit": 0.119 }
+        },
+        "péksütemény": {
+            "kakaópor": { "unit": "g", "price_per_unit": 8 },
+            "túró": { "unit": "g", "price_per_unit": 1.9 },
+            "mazsola": { "unit": "g", "price_per_unit": 2.1 },
+            "lekvár": { "unit": "g", "price_per_unit": 1.26 }
+        },
+        "gluténmentes": {
+            "gluténmentes liszt": { "unit": "g", "price_per_unit": 1.589 },
+            "gluténmentes zabpehely": { "unit": "g", "price_per_unit": 1.299 },
+            "csicseriborsó": { "unit": "g", "price_per_unit": 1.313 }
+        },
+        "laktózmentes": {
+            "laktózmentes tej": { "unit": "dl", "price_per_unit": 44 },
+            "laktózmentes tejföl": { "unit": "g", "price_per_unit": 1.233 },
+            "laktózmentes joghurt": { "unit": "g", "price_per_unit": 0.633 },
+            "laktózmentes kefir": { "unit": "dl", "price_per_unit": 8.87 },
+            "laktózmentes vaj": { "unit": "g", "price_per_unit": 1.033 }
+        },
+        "magok": {
+            "szezámmag": { "unit": "g", "price_per_unit": 2.59 },
+            "tökmag": { "unit": "g", "price_per_unit": 4.82 },
+            "napraforgómag": { "unit": "g", "price_per_unit": 2.345 }
+        },
+        "hústermékek": {
+            "csirkemellfilé": { "unit": "g", "price_per_unit": 2.069 },
+            "csirkemáj": { "unit": "g", "price_per_unit": 0.989 },
+            "kacsamáj": { "unit": "g", "price_per_unit": 17 }
+        }
+    }
+}
