@@ -29,7 +29,6 @@ def load_total_saving():
             data = json.load(f)
         return data
 
-
 if "total_data" not in st.session_state:
     st.session_state.total_data = load_total_saving()
 
@@ -208,8 +207,3 @@ st.write("Kategóriánkénti megtakarítás:")
 st.write(f"- 🥖 Élelmiszer: {total_data['by_category']['Élelmiszer']:.2f} Ft")
 st.write(f"- ♻️ Használt cikkek: {total_data['by_category']['Használt cikkek']:.2f} Ft")
 st.write(f"- 📚 Könyvtár: {total_data['by_category']['Könyvtár']:.2f} Ft")
-
-
-
-
-
