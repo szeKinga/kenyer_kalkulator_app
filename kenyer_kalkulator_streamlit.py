@@ -53,9 +53,10 @@ def load_data():
 st.title("Legyél mindig tudatos!")
 st.markdown(
     """
-    Üdvözöllek a “Legyél mindig tudatos!” oldalon.
+    Nézd meg mennyit spórolsz! Az app használatával könnyen ki tudod számolni, hogy ha szakítasz a pékséggel, bolti rágcsikkal és édességekkel, mennyi pénz marad a zsebedben.
 
-    Az oldal célja, hogy rávilágítást nyújtson, milyen előnyökkel jár, ha nem csak a gúlyáslevest főzzük meg otthon, hanem a kenyeret is, amit mellé eszünk, esetleg a gyerekünknek otthon sütött kiflit csomagolunk tízóraira.
+    A homemade szemlélettel kíméljük a pénztárcánkat, ez egy vizuális motiváció tud lenni. Azzal a kenyérrel, amit én mostanában sütni szoktam, kb. 400 Ft-ot takarítok meg és még összetevőit tekintve is sokkal inkább kedvemre való. Az is kiderült, hogy a tésztát bekeverni pont annyi idő, amíg kivárom a sort a pékségben, a többit már intézi a dagasztó gép és a sütő. A homemade életmód kíván némi átgondoltságot és tudatosságot, igényel tervezést, de ha megvan a kellő motiváció, akkor hozzá lehet szokni.
+
     """
 )
 
@@ -63,18 +64,29 @@ show_more = st.toggle("Tovább olvasom 👀")
 
 if show_more:
     st.markdown("""
-    A házilag készített ételek egészségesebbek, de sajnos ez nehezen számszerűsíthető. Véleményem szerint a környezetünket is óvjuk vele, de sajnos szintén nehéz forintban kifejezni. DE, a jó hír az, hogy a tudatosság ezen formájával spórolhatunk is, ami viszont már számszerűsíthető, hurrá 😊
 
-    Add meg a bolti termékek árát, majd a házi készítéshez használt alapanyagok mennyiségét, és azonnal szembesülsz a forintosított különbséggel.
+    A pénztárcánk kímélése mellett engedjük, hogy a homemade szemlélet végezze a dolgát:
 
-    Az elején persze számolgatni, méregetni kell, átgondolni, hány uzsonnára elegndő az a tepsi kakaóscsiga, és mennyibe került volna ugyanez a pékségben. De ne aggódj, hamar bele lehet rázódni!
+     - kísérletezzünk alternativ, a szervezetet kevésbé terhelő összetevőkkel
 
-    Figyeld az összesítést, ha mindig ugyan azon az eszközön használod az alkalmazást, látod, hogy növekszik napról napra, hétről hétre, hónapról hónapra a homemade szemlélet által keletkezett megtakarításod.
+     - ne kergessünk hiú ábrándokat, sokkal többet fogunk állni a konyhában, DE be lehet vonni a gyerekeket, kíváló közös program és hasznos lehet, ha azt látják, hogy nem mindent a boltban veszünk meg
+     
+     - ha a szervezetünk tehermentesítve van, akkor jobban van energiája a betegségeknek ellenállni
+     
+     - ritkábban vagyunk betegek, kevesebb gyógyszert kell alkalmaznunk, ezzel megint csak spórolunk
+     
+     - ha csökken a gyógyszerbevitel, akkor az előállítás ritmusának is lassulnia kell, tehát csökken a gyárak károsanyag kibocsátása
+     
+     - ezáltal javul a levegő minőség, lelassul a globális felmelegedés, javul az életminőség
 
-    És ami a legjobb, mindezzel nem csak a pénztárcádat, hanem a saját és a családod egészségét is óvod 😊 
-
+    A homemade szemlélet számos előnnyel bír, a jó hír az, hogy amíg a lomha és hosszú távon kimutatható pozitívumok beérnek, addig is tudjuk a megtakarításunkat számolni 😊
+                
     Legyél mindig tudatos!
-    """)
+
+    """
+)
+
+
 
 # --- Session State inicializálás ---
 if "quantities" not in st.session_state:
