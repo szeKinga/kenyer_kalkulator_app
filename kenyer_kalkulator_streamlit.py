@@ -75,24 +75,6 @@ if show_more:
 
     Legyél mindig tudatos!
     """)
-# --- Belépés email-címmel ---
-def email_login():
-    st.header("🔐 Belépés email-címmel")
-    email = st.text_input("Add meg az email-címed:", placeholder="valami@email.hu")
-    if st.button("Belépési link küldése"):
-        if email:
-            try:
-                response = supabase.auth.sign_in_with_otp({"email": email})
-                st.success(f"A belépési linket elküldtük a(z) {email} címre.")
-            except Exception as e:
-                st.error("Hiba történt a link küldése közben.")
-                st.exception(e)
-        else:
-            st.warning("Kérlek, add meg az email címed!")
-
-# Belépés megjelenítése az oldal tetején
-email_login()
-
 
 # --- Session State inicializálás ---
 if "quantities" not in st.session_state:
