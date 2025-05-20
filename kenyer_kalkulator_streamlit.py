@@ -26,8 +26,10 @@ def load_total_saving():
             "first_calculation": datetime.now().strftime("%Y-%m-%d"),
             "by_category": {
                 "Élelmiszer": 0.0,
-                "Használt cikkek": 0.0,
-                "Könyvtár": 0.0
+            },
+            "transport_choices": {
+                "total_distance_m": 0,
+                "total_count": 0
             }
         }
         save_total_saving(data)
@@ -35,6 +37,24 @@ def load_total_saving():
     else:
         with open(SAVINGS_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
+        
+        if "total_saving" not in data:
+            data["total_saving"] = 0.0
+
+        if "first_calculation" not in data:
+            data["first_calculation"] = datetime.now().strftime("%Y-%m-%d")
+        
+        if "by_category" not in data:
+            data["by_category"] = {"Élelmiszer": 0.0}
+        elif "Élelmiszer" not in data["by_category"]:
+            data["by_category"]["Élelmiszer"] = 0.0
+
+        if "transport_choices" not in data:
+            data["transport_choices"] = {
+                "total_distance_m": 0,
+                "total_count": 0
+            }
+        save_total_saving(data)
         return data
 
 if "total_data" not in st.session_state:
@@ -87,7 +107,6 @@ if show_more:
 )
 
 
-
 # --- Session State inicializálás ---
 if "quantities" not in st.session_state:
     st.session_state.quantities = {}
@@ -123,12 +142,23 @@ store_price = float(store_price_input) if store_price_input else 0.0
 
 st.header("2. Alapanyagok kiválasztása")
 
-all_ingredients = {}
-for category in data["ingredients"].values():
-    all_ingredients.update(category)
+# 1. Kategóriaválasztó legördülő
+ingredient_categories = list(data["ingredients"].keys())
+selected_category = st.selectbox("Válassz alapanyag kategóriát:", ingredient_categories)
 
-ingredient_options = list(all_ingredients.keys()) + ["Egyéb"]
+# 2. Alapanyagválasztó legördülő a kiválasztott kategória alapján
+ingredient_options = list(data["ingredients"][selected_category].keys()) + ["Egyéb"]
 selected_ingredient = st.selectbox("Válassz alapanyagot:", ingredient_options)
+
+# Ha "Egyéb" alapanyagot választ a felhasználó, kérjünk manuális nevet és árat
+if selected_ingredient == "Egyéb":
+    selected_ingredient = st.text_input("Add meg az alapanyag nevét:", value="Ismeretlen alapanyag")
+    custom_price = st.number_input(f"Add meg a(z) {selected_ingredient} árát egységenként (Ft):", min_value=0.0, step=1.0)
+    unit = st.text_input("Add meg az egységet (pl. g, db, dl):", value="g")
+else:
+    unit = data["ingredients"][selected_category][selected_ingredient]["unit"]
+    custom_price = data["ingredients"][selected_category][selected_ingredient]["price_per_unit"]
+
 
 # Kategória azonosítása a kiválasztott alapanyag alapján
 selected_category = None
@@ -136,7 +166,6 @@ for category_name, ingredients_dict in data["ingredients"].items():
     if selected_ingredient in ingredients_dict:
         selected_category = category_name
         break
-
 
 if selected_ingredient == "Egyéb":
     custom_ingredient_name = st.text_input("Add meg az új alapanyag nevét:")
@@ -202,3 +231,30 @@ st.subheader("💰 Összesített megtakarításod")
 total_data = load_total_saving()
 st.write(f"Első kalkuláció dátuma: {total_data.get('first_calculation', 'N/A')}")
 st.write(f"Megtakarítás: **{total_data['total_saving']:.2f} Ft**")
+
+st.markdown("---")
+st.subheader("🚶‍♀️ Tudatos közlekedési döntéseid")
+
+# --- Beviteli mezők ---
+transport_count = st.number_input(
+    "Hányszor választottad ma az autó helyett a sétát/biciklizést/tömegközlekedést?",
+    min_value=0,
+    step=1
+)
+
+transport_distance = st.number_input(
+    "Ha volt közte séta vagy biciklizés, hány métert tettél meg így?",
+    min_value=0,
+    step=100
+)
+
+if st.button("➕ Mentés a közlekedési adatokhoz"):
+    # Növeld a mentett értékeket
+    total_data["transport_choices"]["total_distance_m"] += transport_distance
+    total_data["transport_choices"]["total_count"] += transport_count
+    save_total_saving(total_data)
+    st.success("Adatok mentve!")
+
+# --- Megjelenítés ---
+st.write(f"Össesen ennyiszer választottad a tudatos közlekedést: **{total_data['transport_choices']['total_count']}** alkalommal")
+st.write(f"Összesen megtett távolság sétával vagy biciklivel: **{total_data['transport_choices']['total_distance_m']}** méter")
