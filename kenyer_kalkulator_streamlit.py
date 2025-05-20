@@ -55,8 +55,6 @@ st.markdown(
     """
     Nézd meg mennyit spórolsz! Az app használatával könnyen ki tudod számolni, hogy ha szakítasz a pékséggel, bolti rágcsikkal és édességekkel, mennyi pénz marad a zsebedben.
 
-    A homemade szemlélettel kíméljük a pénztárcánkat, ez egy vizuális motiváció tud lenni. Azzal a kenyérrel, amit én mostanában sütni szoktam, kb. 400 Ft-ot takarítok meg és még összetevőit tekintve is sokkal inkább kedvemre való. Az is kiderült, hogy a tésztát bekeverni pont annyi idő, amíg kivárom a sort a pékségben, a többit már intézi a dagasztó gép és a sütő. A homemade életmód kíván némi átgondoltságot és tudatosságot, igényel tervezést, de ha megvan a kellő motiváció, akkor hozzá lehet szokni.
-
     """
 )
 
@@ -64,6 +62,8 @@ show_more = st.toggle("Tovább olvasom 👀")
 
 if show_more:
     st.markdown("""
+
+    A homemade szemlélettel kíméljük a pénztárcánkat, ez egy vizuális motiváció tud lenni. Azzal a kenyérrel, amit én mostanában sütni szoktam, kb. 400 Ft-ot takarítok meg és még összetevőit tekintve is sokkal inkább kedvemre való. Az is kiderült, hogy a tésztát bekeverni pont annyi idő, amíg kivárom a sort a pékségben, a többit már intézi a dagasztó gép és a sütő. A homemade életmód kíván némi átgondoltságot és tudatosságot, igényel tervezést, de ha megvan a kellő motiváció, akkor hozzá lehet szokni.
 
     A pénztárcánk kímélése mellett engedjük, hogy a homemade szemlélet végezze a dolgát:
 
@@ -110,53 +110,58 @@ data = load_data()
 
 # --- 1. Kategória kiválasztása ---
 
-st.header("1. Kategória kiválasztása")
-category_choice = st.selectbox("Válassz egy kategóriát:", ["Élelmiszer", "Használt cikkek", "Könyvtár"])
+st.header("1. Bolti termék kiválasztása")
 
-if category_choice == "Élelmiszer":
-    st.header("2. Bolti termék kiválasztása")
+bread_options = data["store_bread_types"] + ["Egyéb"]
+selected_product = st.selectbox("Válassz egy bolti terméktípust:", bread_options)
 
-    bread_options = data["store_bread_types"] + ["Egyéb"]
-    selected_product = st.selectbox("Válassz egy bolti terméktípust:", bread_options)
+if selected_product == "Egyéb":
+    selected_product = st.text_input("Add meg a termék típusát:", value="Ismeretlen kenyér")
 
-    if selected_product == "Egyéb":
-        selected_product = st.text_input("Add meg a termék típusát:", value="Ismeretlen kenyér")
+store_price_input = st.text_input(f"Add meg a(z) {selected_product} bolti árát (Ft):", value="")
+store_price = float(store_price_input) if store_price_input else 0.0
 
-    store_price_input = st.text_input(f"Add meg a(z) {selected_product} bolti árát (Ft):", value="")
-    store_price = float(store_price_input) if store_price_input else 0.0
+st.header("2. Alapanyagok kiválasztása")
 
-    st.header("3. Alapanyagok kiválasztása")
+all_ingredients = {}
+for category in data["ingredients"].values():
+    all_ingredients.update(category)
 
-    categories = list(data["ingredients"].keys())
-    selected_category = st.selectbox("Válassz kategóriát:", categories)
+ingredient_options = list(all_ingredients.keys()) + ["Egyéb"]
+selected_ingredient = st.selectbox("Válassz alapanyagot:", ingredient_options)
 
-    ingredient_options = list(data["ingredients"][selected_category].keys()) + ["Egyéb"]
-    selected_ingredient = st.selectbox("Válassz alapanyagot:", ingredient_options)
+# Kategória azonosítása a kiválasztott alapanyag alapján
+selected_category = None
+for category_name, ingredients_dict in data["ingredients"].items():
+    if selected_ingredient in ingredients_dict:
+        selected_category = category_name
+        break
 
-    if selected_ingredient == "Egyéb":
-        custom_ingredient_name = st.text_input("Add meg az új alapanyag nevét:")
-        custom_price_per_unit = st.number_input("Add meg az új alapanyag árát (Ft egységenként):", min_value=0.0, step=1.0)
-        custom_unit = st.text_input("Add meg az új alapanyag mértékegységét (pl. g, db, dl):", value="g")
-    else:
-        custom_ingredient_name = selected_ingredient
-        custom_price_per_unit = data["ingredients"][selected_category][selected_ingredient]["price_per_unit"]
-        custom_unit = data["ingredients"][selected_category][selected_ingredient]["unit"]
 
-    quantity_input = st.text_input(
-        f"Add meg a(z) {selected_ingredient} mennyiségét ({custom_unit}):",
-        value="",
-        key=f"quantity_input_{selected_ingredient}"
-    )
+if selected_ingredient == "Egyéb":
+    custom_ingredient_name = st.text_input("Add meg az új alapanyag nevét:")
+    custom_price_per_unit = st.number_input("Add meg az új alapanyag árát (Ft egységenként):", min_value=0.0, step=1.0)
+    custom_unit = st.text_input("Add meg az új alapanyag mértékegységét (pl. g, db, dl):", value="g")
+else:
+    custom_ingredient_name = selected_ingredient
+    custom_price_per_unit = data["ingredients"][selected_category][selected_ingredient]["price_per_unit"]
+    custom_unit = data["ingredients"][selected_category][selected_ingredient]["unit"]
 
-    quantity = float(quantity_input) if quantity_input else 0.0
+quantity_input = st.text_input(
+    f"Add meg a(z) {selected_ingredient} mennyiségét ({custom_unit}):",
+    value="",
+    key=f"quantity_input_{selected_ingredient}"
+)
 
-    if st.button("➕ Hozzáadás az alapanyagokhoz"):
-        if custom_ingredient_name and quantity > 0:
-            st.session_state.quantities[custom_ingredient_name] = (quantity, custom_price_per_unit, custom_unit)
-            st.success(f"{custom_ingredient_name} hozzáadva a listához!")
+quantity = float(quantity_input) if quantity_input else 0.0
+
+if st.button("➕ Hozzáadás az alapanyagokhoz"):
+    if custom_ingredient_name and quantity > 0:
+        st.session_state.quantities[custom_ingredient_name] = (quantity, custom_price_per_unit, custom_unit)
+        st.success(f"{custom_ingredient_name} hozzáadva a listához!")
 
 # --- Kalkuláció csak élelmiszer esetén ---
-    st.header("4. Kalkuláció")
+    st.header("3. Kalkuláció")
 
     if st.session_state.quantities:
         st.subheader("Eddigi alapanyagok:")
@@ -190,40 +195,10 @@ if category_choice == "Élelmiszer":
 
         else:
             st.info("Adj hozzá legalább egy alapanyagot a kalkulációhoz.")
-        
-
-elif category_choice == "Használt cikkek":
-    st.header("2. Használt cikkek kalkuláció")
-    used_price = st.number_input("Mennyit költöttél a használt cikkekre? (Ft)", min_value=0.0, step=1.0)
-    new_price = st.number_input("Mennyibe került volna újonnan a boltban? (Ft)", min_value=0.0, step=1.0)
-    saving_used = new_price - used_price if new_price > used_price else 0.0
-    st.session_state.saving_used = saving_used
-    if st.button("📊 Kalkulálás - Használt cikkek"):
-        st.success(f"Megtakarítás: {saving_used:.2f} Ft")
-        total_data["total_saving"] += saving_used
-        total_data["by_category"]["Használt cikkek"] += saving_used
-        save_total_saving(total_data)
-        st.session_state.calculated = True
-
-elif category_choice == "Könyvtár":
-    st.header("2. Könyvtári megtakarítás")
-    book_price = st.number_input("Mennyibe került volna a könyv (Ft)?", min_value=0.0, step=1.0)
-    st.session_state.saving_library = book_price
-    if st.button("📚 Kalkulálás - Könyvtár"):
-        st.success(f"Megtakarítás a könyvtár által: {book_price:.2f} Ft")
-        total_data["total_saving"] += book_price
-        total_data["by_category"]["Könyvtár"] += book_price
-        save_total_saving(total_data)
-        st.session_state.calculated = True
 
 st.markdown("---")
 st.subheader("💰 Összesített megtakarításod")
 
 total_data = load_total_saving()
 st.write(f"Első kalkuláció dátuma: {total_data.get('first_calculation', 'N/A')}")
-st.write(f"Összes megtakarítás eddig: **{total_data['total_saving']:.2f} Ft**")
-
-st.write("Kategóriánkénti megtakarítás:")
-st.write(f"- 🥖 Élelmiszer: {total_data['by_category']['Élelmiszer']:.2f} Ft")
-st.write(f"- ♻️ Használt cikkek: {total_data['by_category']['Használt cikkek']:.2f} Ft")
-st.write(f"- 📚 Könyvtár: {total_data['by_category']['Könyvtár']:.2f} Ft")
+st.write(f"Megtakarítás: **{total_data['total_saving']:.2f} Ft**")
