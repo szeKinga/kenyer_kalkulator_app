@@ -5,6 +5,8 @@ import os
 
 from supabase import create_client, Client
 
+st.set_page_config(page_title="Kenyér Kalkulátor", page_icon="🍞")
+
 # Supabase init
 SUPABASE_URL = st.secrets["SUPABASE_URL"]
 SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
@@ -61,13 +63,6 @@ if "total_data" not in st.session_state:
     st.session_state.total_data = load_total_saving()
 
 total_data = st.session_state.total_data
-
-st.set_page_config(page_title="Kenyér Kalkulátor", page_icon="🍞")
-
-# --- Adatok betöltése ---
-def load_data():
-    with open("data.json", "r", encoding="utf-8") as f:
-        return json.load(f)
 
 # --- Streamlit oldalbeállítás ---
 st.title("Legyél mindig tudatos!")
@@ -190,40 +185,40 @@ if st.button("➕ Hozzáadás az alapanyagokhoz"):
         st.success(f"{custom_ingredient_name} hozzáadva a listához!")
 
 # --- Kalkuláció csak élelmiszer esetén ---
-    st.header("3. Kalkuláció")
+st.header("3. Kalkuláció")
 
-    if st.session_state.quantities:
-        st.subheader("Eddigi alapanyagok:")
+if st.session_state.quantities:
+    st.subheader("Eddigi alapanyagok:")
+    for name, (qty, price_per_unit, unit) in st.session_state.quantities.items():
+        st.write(f"- {name}: {qty} {unit} (egységár: {price_per_unit:.2f} Ft/{unit})")
+
+    if st.button("📊 Kalkulálás"):
+        homemade_cost = 0
         for name, (qty, price_per_unit, unit) in st.session_state.quantities.items():
-            st.write(f"- {name}: {qty} {unit} (egységár: {price_per_unit:.2f} Ft/{unit})")
-
-        if st.button("📊 Kalkulálás"):
-            homemade_cost = 0
-            for name, (qty, price_per_unit, unit) in st.session_state.quantities.items():
-                homemade_cost += price_per_unit * qty
+            homemade_cost += price_per_unit * qty
             
-            saving = store_price - homemade_cost
+        saving = store_price - homemade_cost
 
-            st.session_state.homemade_cost = homemade_cost
-            st.session_state.saving = saving
-            st.session_state.calculated = True
+        st.session_state.homemade_cost = homemade_cost
+        st.session_state.saving = saving
+        st.session_state.calculated = True
 
-            # Mentés közvetlenül kalkuláció után
-            st.session_state.total_data["total_saving"] += saving
-            st.session_state.total_data["by_category"]["Élelmiszer"] += saving
-            save_total_saving(st.session_state.total_data)
+        # Mentés közvetlenül kalkuláció után
+        st.session_state.total_data["total_saving"] += saving
+        st.session_state.total_data["by_category"]["Élelmiszer"] += saving
+        save_total_saving(st.session_state.total_data)
 
-        if st.session_state.calculated:
-            st.write(f"- Házi készítés költsége: **{st.session_state.homemade_cost:.2f} Ft**")
-            st.write(f"- Megtakarítás: **{st.session_state.saving:.2f} Ft**")
+    if st.session_state.calculated:
+        st.write(f"- Házi készítés költsége: **{st.session_state.homemade_cost:.2f} Ft**")
+        st.write(f"- Megtakarítás: **{st.session_state.saving:.2f} Ft**")
             
-            if st.button("🔄 Új kalkuláció indítása"):
-                st.session_state.quantities = {}
-                st.session_state.calculated = False
-                st.rerun()
+        if st.button("🔄 Új kalkuláció indítása"):
+            st.session_state.quantities = {}
+            st.session_state.calculated = False
+            st.rerun()
 
-        else:
-            st.info("Adj hozzá legalább egy alapanyagot a kalkulációhoz.")
+    else:
+        st.info("Adj hozzá legalább egy alapanyagot a kalkulációhoz.")
 
 st.markdown("---")
 st.subheader("💰 Összesített megtakarításod")
@@ -235,26 +230,65 @@ st.write(f"Megtakarítás: **{total_data['total_saving']:.2f} Ft**")
 st.markdown("---")
 st.subheader("🚶‍♀️ Tudatos közlekedési döntéseid")
 
+# --- CO2 értékek autótípusonként (gramm/km) ---
+import streamlit as st
+import os
+import json
+from datetime import datetime
+
+SAVINGS_FILE = "savings.json"
+
+# --- CO2 értékek autótípusonként (gramm/km) ---
+CO2_VALUES = {
+    "Benzines": 215,
+    "Dízel": 180,
+    "Elektromos": 75
+}
+
 # --- Beviteli mezők ---
 transport_count = st.number_input(
     "Hányszor választottad ma az autó helyett a sétát/biciklizést/tömegközlekedést?",
     min_value=0,
-    step=1
+    step=1,
+    key="transport_count_input"
 )
 
 transport_distance = st.number_input(
     "Ha volt közte séta vagy biciklizés, hány métert tettél meg így?",
     min_value=0,
-    step=100
+    step=100,
+    key="transport_distance_input"
 )
 
-if st.button("➕ Mentés a közlekedési adatokhoz"):
-    # Növeld a mentett értékeket
+if st.button("➕ Mentés a közlekedési adatokhoz", key="save_transport_button"):
+    # Mentett adatok frissítése
     total_data["transport_choices"]["total_distance_m"] += transport_distance
     total_data["transport_choices"]["total_count"] += transport_count
-    save_total_saving(total_data)
-    st.success("Adatok mentve!")
 
-# --- Megjelenítés ---
-st.write(f"Össesen ennyiszer választottad a tudatos közlekedést: **{total_data['transport_choices']['total_count']}** alkalommal")
-st.write(f"Összesen megtett távolság sétával vagy biciklivel: **{total_data['transport_choices']['total_distance_m']}** méter")
+    # Inicializáljuk a co2_saved-et, ha még nincs
+    if "co2_saved" not in total_data["transport_choices"]:
+        total_data["transport_choices"]["co2_saved"] = {}
+
+    saved_texts = []
+    for car_type, grams_per_km in CO2_VALUES.items():
+        saved_grams = (transport_distance / 1000) * grams_per_km  # gramm
+        # Ha nincs még mentve ilyen típushoz, inicializáljuk
+        if car_type not in total_data["transport_choices"]["co2_saved"]:
+            total_data["transport_choices"]["co2_saved"][car_type] = 0.0
+        total_data["transport_choices"]["co2_saved"][car_type] += saved_grams
+        saved_texts.append(f"**{car_type}**: {saved_grams:.2f} g CO₂ megtakarítás")
+
+    save_total_saving(total_data)
+
+    st.success("Adatok mentve!")
+    st.info("Nézd meg, hágy gramm CO₂-vel kímélted meg a bolygót ezzel a sétával/biciklizéssel:\n\n" + "\n".join(saved_texts))
+
+st.markdown("---")
+st.subheader("📊 Összesített környezetvédelmi hatás")
+
+st.write(f"Összes alternatív közlekedési alkalmak száma: **{total_data['transport_choices']['total_count']}**")
+st.write(f"Összes megtett távolság: **{total_data['transport_choices']['total_distance_m'] / 1000:.2f} km**")
+
+st.write("**Elkerült CO₂ kibocsátás autótípusonként:**")
+for car, grams in total_data["transport_choices"]["co2_saved"].items():
+    st.write(f"- {car}: {grams:.2f} gramm CO₂")
