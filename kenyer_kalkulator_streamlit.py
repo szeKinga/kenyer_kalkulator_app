@@ -193,7 +193,12 @@ st.header("3. Kalkuláció")
 if st.session_state.quantities:
     st.subheader("Eddigi alapanyagok:")
     for name, (qty, price_per_unit, unit) in st.session_state.quantities.items():
-        st.write(f"- {name}: {qty} {unit} (egységár: {price_per_unit:.2f} Ft/{unit})")
+        material_cost = price_per_unit * qty
+        st.write(
+            f"- {name}: {qty} {unit} "
+            f"(egységár: {price_per_unit:.2f} Ft/{unit}), "
+            f"anyagköltség: {material_cost:.2f} Ft"
+        )
 
     if st.button("📊 Kalkulálás"):
         homemade_cost = 0
@@ -228,7 +233,7 @@ st.subheader("💰 Összesített megtakarításod")
 
 total_data = load_total_saving()
 st.write(f"Első kalkuláció dátuma: {total_data.get('first_calculation', 'N/A')}")
-st.write(f"Megtakarítás: **{total_data['total_saving']:.2f} Ft**")
+st.write(f"Megtakarítás: **{int(round(total_data['total_saving']))} Ft**")
 
 st.markdown("---")
 st.markdown("<h2 style='font-size: 36px;'>Tudatos közlekedési döntéseid</h2>", unsafe_allow_html=True)
@@ -312,6 +317,7 @@ total_data["transport_choices"].setdefault("total_count", 0)
 total_data["transport_choices"].setdefault("co2_saved", {})
 total_data["transport_choices"].setdefault("burned_calories_walk", 0.0)
 total_data["transport_choices"].setdefault("burned_calories_bike", 0.0)
+total_data["transport_choices"].setdefault("fuel_cost_saved", {})
 
 # --- Kalkuláció ---
 if st.button("🔥 Kalkulál és ment"):
@@ -323,7 +329,7 @@ if st.button("🔥 Kalkulál és ment"):
     # Kalóriaégetés számítása
     if transport_distance > 0:
         distance_km = transport_distance / 1000
-        walk_kcal = 0.3 * user_weight * distance_km
+        walk_kcal = 0.9 * user_weight * distance_km
         bike_kcal = 0.4 * user_weight * distance_km
 
         if transport_type == "Gyaloglás":
@@ -333,41 +339,44 @@ if st.button("🔥 Kalkulál és ment"):
             total_data["transport_choices"]["burned_calories_bike"] += bike_kcal
             st.success(f"💪 Ezzel a választással {bike_kcal:.1f} kcal-t égettél el biciklizéssel.")            
 
-# CO₂ megtakarítás számítása mindig történik, függetlenül a távolságtól
-distance_km = transport_distance / 1000
-grams_per_km = CO2_VALUES.get(transport_choice, 0)
-saved_grams = distance_km * grams_per_km
+    # CO₂ megtakarítás számítása mindig történik, függetlenül a távolságtól
+    distance_km = transport_distance / 1000
+    grams_per_km = CO2_VALUES.get(transport_choice, 0)
+    saved_grams = distance_km * grams_per_km
 
-# Üzemanyagköltség megtakarítás kiszámítása
-fuel_data = FUEL_COSTS.get(transport_choice)
+    total_data["transport_choices"]["co2_saved"].setdefault(transport_choice, 0.0)
+    total_data["transport_choices"]["co2_saved"][transport_choice] += saved_grams
 
-if fuel_data:
-    if transport_choice == "Elektromos":
-        consumption_per_km = fuel_data["consumption_kWh_per_100km"] / 100
-        fuel_price = fuel_data["price_per_kWh"]
+    # Üzemanyagköltség megtakarítás kiszámítása
+    fuel_data = FUEL_COSTS.get(transport_choice)
+
+    if fuel_data:
+        if transport_choice == "Elektromos":
+            consumption_per_km = fuel_data["consumption_kWh_per_100km"] / 100
+            fuel_price = fuel_data["price_per_kWh"]
+        else:
+            consumption_per_km = fuel_data["consumption_l_per_100km"] / 100
+            fuel_price = fuel_data["price_per_l"]
+
+        saved_fuel = distance_km * consumption_per_km
+        saved_cost = saved_fuel * fuel_price
     else:
-        consumption_per_km = fuel_data["consumption_l_per_100km"] / 100
-        fuel_price = fuel_data["price_per_l"]
+        saved_cost = 0
+    
+    total_data["transport_choices"]["fuel_cost_saved"].setdefault(transport_choice, 0.0)
+    total_data["transport_choices"]["fuel_cost_saved"][transport_choice] += saved_cost
 
-    saved_fuel = distance_km * consumption_per_km
-    saved_cost = saved_fuel * fuel_price
-else:
-    saved_cost = 0
+    saved_texts = []
+    saved_texts.append(f"**{transport_choice}**: {saved_grams:.2f} g CO₂ / {saved_cost:.0f} Ft megtakarítás")
 
-saved_texts = []
+    st.success("Adatok mentve!")
+    if transport_distance > 0:
+        st.info("Nézd meg, hány gramm CO₂-vel kímélted meg a bolygót ezzel a sétával/biciklizéssel:\n\n" + "\n".join(saved_texts))
+    else:
+        st.info("Nézd meg, hány gramm CO₂-vel kímélted meg a bolygót az alternatív közlekedés választásával:\n\n" + "\n".join(saved_texts))
 
-total_data["transport_choices"]["co2_saved"].setdefault(transport_choice, 0.0)
-total_data["transport_choices"]["co2_saved"][transport_choice] += saved_grams
-saved_texts.append(f"**{transport_choice}**: {saved_grams:.2f} g CO₂ / {saved_cost:.0f} Ft megtakarítás")
-
-st.success("Adatok mentve!")
-if transport_distance > 0:
-    st.info("Nézd meg, hány gramm CO₂-vel kímélted meg a bolygót ezzel a sétával/biciklizéssel:\n\n" + "\n".join(saved_texts))
-else:
-    st.info("Nézd meg, hány gramm CO₂-vel kímélted meg a bolygót az alternatív közlekedés választásával:\n\n" + "\n".join(saved_texts))
-
-with open("savings.json", "w", encoding="utf-8") as f:
-    json.dump(total_data, f, ensure_ascii=False, indent=2)
+    with open("savings.json", "w", encoding="utf-8") as f:
+        json.dump(total_data, f, ensure_ascii=False, indent=2)
 
 # --- Összegzés ---
 st.markdown("---")
@@ -383,3 +392,8 @@ st.write("**Elkerült CO₂ kibocsátás autótípusonként:**")
 for car, grams in total_data["transport_choices"]["co2_saved"].items():
     if grams > 0:
         st.write(f"- {car}: {grams:.2f} gramm CO₂")
+
+st.write("**Üzemanyagköltség-megtakarítás autótípusonként:**")
+for car, cost in total_data["transport_choices"]["fuel_cost_saved"].items():
+    if cost > 0:
+        st.write(f"- {car}: {cost:.0f} Ft")
