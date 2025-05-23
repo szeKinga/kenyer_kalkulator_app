@@ -43,7 +43,8 @@
             "tej": { "unit": "dl", "price_per_unit": 40 },
             "tejföl": { "unit": "g", "price_per_unit": 0.789 },
             "joghurt": { "unit": "g", "price_per_unit": 0.498 },
-            "kefir": { "unit": "g", "price_per_unit": 0.119 }
+            "kefir": { "unit": "g", "price_per_unit": 0.119 },
+            "trappista sajt": { "unit": "g", "price_per_unit": 2.749 }
         },
         "péksütemény": {
             "kakaópor": { "unit": "g", "price_per_unit": 8 },
@@ -70,6 +71,7 @@
         },
         "hústermékek": {
             "csirkemellfilé": { "unit": "g", "price_per_unit": 2.069 },
+            "virsli": { "unit": "g", "price_per_unit": 5},
             "csirkemáj": { "unit": "g", "price_per_unit": 0.989 },
             "kacsamáj": { "unit": "g", "price_per_unit": 17 }
         }
