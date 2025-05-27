@@ -80,7 +80,7 @@ show_more = st.toggle("Tovább olvasom 👀")
 if show_more:
     st.markdown("""
 
-    A homemade szemlélettel kíméljük a pénztárcánkat, ez egy vizuális motiváció tud lenni. Azzal a kenyérrel, amit én mostanában sütni szoktam, kb. 400 Ft-ot takarítok meg és még összetevőit tekintve is sokkal inkább kedvemre való. Az is kiderült, hogy a tésztát bekeverni pont annyi idő, amíg kivárom a sort a pékségben, a többit már intézi a dagasztó gép és a sütő. A homemade életmód kíván némi átgondoltságot és tudatosságot, igényel tervezést, de ha megvan a kellő motiváció, akkor hozzá lehet szokni.
+    A homemade szemlélettel kíméljük a pénztárcánkat, ez egy vizuális motiváció tud lenni. Azzal a kenyérrel, amit én mostanában sütni szoktam, kb. 400 Ft-ot takarítok meg és még összetevőit tekintve is sokkal inkább kedvemre való. De a napokban sütöttem sajtospogácsát, extrasajtosan, a végeredmény 1 kg lett, közel 6.500 Ft-ot spóroltam a homemade személettel. Az is kiderült, hogy a kenyér tésztát bekeverni pont annyi idő, amíg kivárom a sort a pékségben, a többit már intézi a dagasztó gép és a sütő. A homemade életmód kíván némi átgondoltságot és tudatosságot, igényel tervezést, de ha megvan a kellő motiváció, akkor hozzá lehet szokni.
 
     A pénztárcánk kímélése mellett engedjük, hogy a homemade szemlélet végezze a dolgát:
 
