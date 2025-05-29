@@ -68,9 +68,9 @@ total_data = st.session_state.total_data
 st.title("Legyél mindig tudatos!")
 st.markdown(
     """
-    Üdvözöllek a Legyél mindig tudatos! appban, az alkalmazásnak 3 fő mozgatórugója van, táplálkozzunk egészségesebben, csökkentsük a környezetünk terhelését és spóroljunk.
+    Üdvözöllek a Legyél mindig tudatos! appban, az alkalmazásnak három fő mozgatórugója van, táplálkozzunk egészségesebben, csökkentsük a környezetünk terhelését és spóroljunk.
     
-    Játszunk a számokkal, nézd meg mennyit spórolsz! Az app használatával könnyen ki tudod számolni, hogy ha szakítasz a pékséggel, bolti rágcsikkal és édességekkel, mennyi pénz marad a zsebedben, amelett, hogy megvonod magadtól a felesleges káros élelmiszerösszetevőket.
+    Játszunk a számokkal, nézd meg, mennyit spórolsz! Az app használatával könnyen ki tudod számolni, hogy ha szakítasz a pékséggel, bolti rágcsikkal és édességekkel, mennyi pénz marad a zsebedben, amellett, hogy megvonod magadtól a felesleges egészségtelen hozzávalókat.
 
     """
 )
@@ -80,29 +80,29 @@ show_more = st.toggle("Tovább olvasom 👀")
 if show_more:
     st.markdown("""
 
-    A homemade szemlélettel kíméljük a pénztárcánkat, ez egy vizuális motiváció tud lenni. Azzal a kenyérrel, amit én mostanában sütni szoktam, kb. 400 Ft-ot takarítok meg és még összetevőit tekintve is sokkal inkább kedvemre való. De a napokban sütöttem sajtospogácsát, extrasajtosan, a végeredmény 1 kg lett, közel 6.500 Ft-ot spóroltam a homemade személettel. Az is kiderült, hogy a kenyér tésztát bekeverni pont annyi idő, amíg kivárom a sort a pékségben, a többit már intézi a dagasztó gép és a sütő. A homemade életmód kíván némi átgondoltságot és tudatosságot, igényel tervezést, de ha megvan a kellő motiváció, akkor hozzá lehet szokni.
+    A homemade szemlélettel kíméljük a pénztárcánkat, ez egy vizuális motiváció tud lenni. Azzal a kenyérrel, amit mostanában sütök, kb. 400 Ft-ot takarítok meg és még összetevőit tekintve is sokkal inkább kedvemre való. De a napokban sütöttem sajtospogácsát, extrasajtosan, a végeredmény 1 kg lett, közel 6.500 Ft-ot spóroltam a homemade szemlélettel. Az is kiderült, hogy a kenyértésztát bekeverni pont annyi idő, amíg kivárom a sort a pékségben, a többit már intézi a dagasztógép és a sütő. A homemade életmód kíván némi átgondoltságot és tudatosságot, igényel tervezést, de ha megvan a kellő motiváció, akkor hozzá lehet szokni.
 
     A pénztárcánk kímélése mellett engedjük, hogy a homemade szemlélet végezze a dolgát:
 
-     - kísérletezzünk alternativ, a szervezetet kevésbé terhelő összetevőkkel
+     - kísérletezzünk alternatív, a szervezetet kevésbé terhelő összetevőkkel
 
-     - ne kergessünk hiú ábrándokat, valóban több időt fogunk a konyhában tölteni, DE be lehet vonni a gyerekeket, kíváló közös program és hasznos lehet, ha azt látják, hogy nem mindent a boltban, készen veszünk meg
+     - ne kergessünk hiú ábrándokat, valóban több időt fogunk a konyhában tölteni, DE be lehet vonni a gyerekeket, kiváló közös program és hasznos lehet, ha azt látják, hogy nem mindent a boltban, készen veszünk meg
      
-     - ha a szervezetünk tehermentesítve van, akkor jobban van energiája a betegségeknek ellenállni
+     - ha a szervezetünk tehermentesítve van, akkor jobban van energiája ellenállni a betegségeknek
      
      - ritkábban vagyunk betegek, kevesebb gyógyszert kell alkalmaznunk, ezzel megint csak spórolunk
      
-     - ha csökken a gyógyszerbevitel, akkor az előállítás ritmusának is lassulnia kell, tehát csökken a gyárak károsanyag kibocsátása
+     - ha csökken a gyógyszerbevitel, akkor az előállítás ritmusának is lassulnia kell, tehát csökken a gyárak károsanyag-kibocsátása
      
-     - ezáltal javul a levegő minőség, lelassul a globális felmelegedés, javul az életminőség
+     - ezáltal javul a levegőminőség, lelassul a globális felmelegedés, javul az életminőség
 
-    A homemade szemlélet számos előnnyel bír, a jó hír az, hogy amíg a lomha és hosszú távon kimutatható pozitívumok beérnek, addig is tudjuk a megtakarításunkat számolni 😊
+    A homemade szemlélet számos előnnyel bír, a jó hír az, hogy amíg a hosszabb távon érzékelhető, lassan beérő pozitív hatások megjelennek, addig is tudjuk a megtakarításunkat számolni 😊
     
-    Ez a szemlélet ihlette az alkalmazást, de egy kicsit tovább gondoltam, kibővítettem egy második blokkal, ami azt számolja, hogy ha az autót gyaloglásra vagy kerékpárra cseréljük, a megadott táv megtételével hány gramm széndioxidtól vontad meg a bolygót, mennyi üzemanyag költséget spóroltál meg magadnak, és mennyi kalóriát égettél el ezzel a remek döntéssel 😊
+    Ez a szemlélet ihlette az alkalmazást, de egy kicsit tovább gondoltam, kibővítettem egy második blokkal, ami azt számolja, hogy ha az autót gyaloglásra vagy kerékpárra cseréljük, a megadott táv megtételével hány gramm széndioxidtól kíméljük meg a bolygót, mennyi üzemanyagköltséget spórolunk, és mennyi kalóriát égetünk el ezzel a remek döntéssel 😊
     
-    Játszunk el a gondolattal, egy héten hányszor adódik olyan alkalom, hogy el kell ugranod gyorsan valahova (elfogyott a tejföl, megérkezett a az automatába a csomag, ...)?! Ha heti 3-szor teszel meg alkalmanként 2 km-t gyalog vagy biciklivel, az éves szinten 260 km. Az app segítségével könnyen ki tudod számolni, ezzel mennyi üzemanyagköltséget spóroltál meg és hány gramm CO₂-től kíméled meg a levegőt. És ez csak TE vagy, rajtad kívül él még 8 milliárd ember a Földön...
+    Játszunk el a gondolattal, egy héten hányszor adódik olyan alkalom, hogy el kell ugranod gyorsan valahova (elfogyott a tejföl, megérkezett az automatába a csomag, ...)?! Ha heti háromszor teszel meg alkalmanként 2 km-t gyalog vagy biciklivel, az éves szinten 260 km. Az app segítségével könnyen ki tudod számolni, ezzel mennyi üzemanyagköltséget spóroltál meg és hány gramm CO₂-től kíméled meg a levegőt. És ez csak TE vagy, rajtad kívül él még 8 milliárd ember a Földön...
     
-    Vigyázat, mert a homemade magatartás és a mozgás függőséget okoz! 😊
+    Vigyázat, mert a homemade életmód és a mozgás függőséget okoz! 😊
                 
     Legyél mindig tudatos!
 
