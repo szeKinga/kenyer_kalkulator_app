@@ -10,6 +10,7 @@
         "8 db csokis croissant (500g lisztből)",
         "8 db virslis croissant (500g lisztből)",
         "8 db bármi, amit elkészítes otthon, és nem a boltban veszed meg (500g lisztből)",
+        "16 szeletes torta",
         "felvágott"
     ],
 
@@ -39,21 +40,25 @@
             "só": { "unit": "g", "price_per_unit": 0.305 },
             "himalája só": { "unit": "g", "price_per_unit": 0.899 },
             "tojás": { "unit": "db", "price_per_unit": 100 },
-            "kristálycukor": { "unit": "g", "price_per_unit": 0.357 },
-            "porcukor": { "unit": "g", "price_per_unit": 0.538 }
+            "kristálycukor": { "unit": "g", "price_per_unit": 0.357 }
         },
         "tejtermék": {
             "tej": { "unit": "dl", "price_per_unit": 40 },
             "tejföl": { "unit": "g", "price_per_unit": 0.789 },
             "joghurt": { "unit": "g", "price_per_unit": 0.498 },
             "kefir": { "unit": "g", "price_per_unit": 0.119 },
-            "trappista sajt": { "unit": "g", "price_per_unit": 2.749 }
+            "trappista sajt": { "unit": "g", "price_per_unit": 2.749 },
+            "mascarpone": { "unit": "g", "price_per_unit": 2.796 },
+            "habtejszín": { "unit": "ml", "price_per_unit": 1.995 }
         },
-        "péksütemény": {
+        "sütemény/torta": {
             "kakaópor": { "unit": "g", "price_per_unit": 8 },
             "túró": { "unit": "g", "price_per_unit": 1.9 },
             "mazsola": { "unit": "g", "price_per_unit": 2.1 },
-            "lekvár": { "unit": "g", "price_per_unit": 1.26 }
+            "lekvár": { "unit": "g", "price_per_unit": 1.26 },
+            "porcukor": { "unit": "g", "price_per_unit": 0.538 },
+            "kristálycukor": { "unit": "g", "price_per_unit": 0.357 },
+            "pudingpor": { "unit": "db", "price_per_unit": 133}
         },
         "gluténmentes": {
             "gluténmentes liszt": { "unit": "g", "price_per_unit": 1.589 },
@@ -65,7 +70,9 @@
             "laktózmentes tejföl": { "unit": "g", "price_per_unit": 1.233 },
             "laktózmentes joghurt": { "unit": "g", "price_per_unit": 0.633 },
             "laktózmentes kefir": { "unit": "dl", "price_per_unit": 8.87 },
-            "laktózmentes vaj": { "unit": "g", "price_per_unit": 1.033 }
+            "laktózmentes vaj": { "unit": "g", "price_per_unit": 1.033 },
+            "laktózmentes mascarpone": { "unit": "g", "price_per_unit": 2.996 },
+            "laktózmentes habtejszín": { "unit": "ml", "price_per_unit": 2.495 }
         },
         "magok": {
             "szezámmag": { "unit": "g", "price_per_unit": 2.59 },
@@ -74,7 +81,7 @@
         },
         "hústermékek": {
             "csirkemellfilé": { "unit": "g", "price_per_unit": 2.069 },
-            "virsli": { "unit": "g", "price_per_unit": 5},
+            "virsli": { "unit": "g", "price_per_unit": 5 },
             "csirkemáj": { "unit": "g", "price_per_unit": 0.989 },
             "kacsamáj": { "unit": "g", "price_per_unit": 17 }
         }
