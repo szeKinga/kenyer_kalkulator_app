@@ -58,7 +58,8 @@
             "lekvár": { "unit": "g", "price_per_unit": 1.26 },
             "porcukor": { "unit": "g", "price_per_unit": 0.538 },
             "kristálycukor": { "unit": "g", "price_per_unit": 0.357 },
-            "pudingpor": { "unit": "db", "price_per_unit": 133}
+            "pudingpor": { "unit": "db", "price_per_unit": 133 },
+            "kókuszreszelék": { "unit": "g", "price_per_unit": 2.796 }
         },
         "gluténmentes": {
             "gluténmentes liszt": { "unit": "g", "price_per_unit": 1.589 },
@@ -74,10 +75,14 @@
             "laktózmentes mascarpone": { "unit": "g", "price_per_unit": 2.996 },
             "laktózmentes habtejszín": { "unit": "ml", "price_per_unit": 2.495 }
         },
+        "alternatív": {
+            "datolya": { "unit": "g", "price_per_unit": 1.6 }
+        },
         "magok": {
             "szezámmag": { "unit": "g", "price_per_unit": 2.59 },
             "tökmag": { "unit": "g", "price_per_unit": 4.82 },
-            "napraforgómag": { "unit": "g", "price_per_unit": 2.345 }
+            "napraforgómag": { "unit": "g", "price_per_unit": 2.345 },
+            "földimogyoró": { "unit": "g", "price_per_unit": 2.6 }
         },
         "hústermékek": {
             "csirkemellfilé": { "unit": "g", "price_per_unit": 2.069 },
